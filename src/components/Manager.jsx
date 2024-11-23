@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuidv4 } from 'uuid';
@@ -29,13 +29,13 @@ const Manager = () => {
     }
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value })
-        console.log(form);
+        // console.log(form);
     }
     const addPassword = () => {
         if(form.website.length > 3 && form.username.length > 3 && form.password.length > 3){
             setPasswordArray([...passwordArray, {...form, id: uuidv4()}])
             localStorage.setItem('passwords', JSON.stringify([...passwordArray, {...form, id: uuidv4()}]))
-            console.log([...passwordArray, {...form, id: uuidv4()}]);
+            // console.log([...passwordArray, {...form, id: uuidv4()}]);
             setForm({ website: "", username: "", password: "" })
             toast('Password saved', {
                 position: "top-right",
@@ -48,22 +48,24 @@ const Manager = () => {
                 theme: "light"
             });
         }
-        toast('Error: Password not saved', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-        });
+        else {
+            toast('Error: Password not saved', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            });
+        }
     }
 
     const deletePassword = (id) => {
         setPasswordArray(passwordArray.filter(i => i.id !== id))
         localStorage.setItem('passwords', JSON.stringify(passwordArray.filter(i => i.id !== id)))
-        console.log([...passwordArray, {...form, id: uuidv4()}]);
+        // console.log([...passwordArray, {...form, id: uuidv4()}]);
         toast('Password deleted', {
             position: "top-right",
             autoClose: 5000,
@@ -100,7 +102,7 @@ const Manager = () => {
         <>
             <ToastContainer
                 position="top-right"
-                autoClose={5000}
+                autoClose={2000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
@@ -110,8 +112,6 @@ const Manager = () => {
                 pauseOnHover
                 theme="light"
             />
-            {/* Same as */}
-            <ToastContainer />
             <div className="absolute inset-0 -z-10 h-full w-full bg-green-50 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
                 <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-white opacity-20 blur-[100px]"></div>
             </div>
@@ -171,7 +171,7 @@ const Manager = () => {
                                     </td>
                                     <td className='md:w-28 text-center py-2 border border-zinc-400'>
                                         <div className='flex gap-3 justify-center items-center'>
-                                            <span>{item.password}</span>
+                                            <span>{"*".repeat(item.password.length)}</span>
                                             <span onClick={() => { copyText(item.password) }} className='cursor-pointer'><i className="fa-regular fa-copy cursor-pointer"></i></span>
                                         </div>
                                     </td>
@@ -185,7 +185,7 @@ const Manager = () => {
                                                     style={{"width": "20px", "height": "22px"}}>
                                                 </lord-icon>
                                             </button>
-                                            <button onClick={() => {editPassword(item.id)}} className='underline text-blue-600 flex items-center text-base'><span><i class="fa-solid fa-pen-to-square"></i></span></button>
+                                            <button onClick={() => {editPassword(item.id)}} className='underline text-blue-600 flex items-center text-base'><span><i className="fa-solid fa-pen-to-square"></i></span></button>
                                         </div>
                                     </td>
                                 </tr>)
